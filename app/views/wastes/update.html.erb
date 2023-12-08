@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить трату</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .menu {
+            display: inline-block;
+            position: relative;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .menu-list {
+            display: none;
+            position: absolute;
+            background-color: black;
+            padding: 10px;
+            min-width: 120px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .menu:hover .menu-list,
+        .menu-list:hover {
+            display: block;
+        }
+
+        .menu-item {
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #333;
+        }
+
+        .form-container {
+            width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<script>
+    function me() {
+        window.location.href = "/users/show.html";
+    }
+    function all_users() {
+        window.location.href = "/users/index.html";
+    }
+    function create_user() {
+        window.location.href = "/users/create.html";
+    }
+    function report() {
+        window.location.href = "/reports/show.html";
+    }
+    function create_profit() {
+        window.location.href = "/profits/create.html";
+    }
+    function create_waste() {
+        window.location.href = "/wastes/create.html";
+    }
+    function all_profits() {
+        window.location.href = "/profits/index.html";
+    }
+    function all_wastes() {
+        window.location.href = "/wastes/index.html";
+    }
+</script>
+<body>
+    <div class="header">
+        <div class="menu">
+            Пользователь
+            <div class="menu-list">
+                <div class="menu-item" onclick="me()">Я</div>
+                <div class="menu-item" onclick="all_users()">Все пользователи</div>
+                <div class="menu-item" onclick="create_user()">Создать пользователя</div>
+            </div>
+        </div>
+        <div class="menu">
+            Отчеты
+            <div class="menu-list">
+                <div class="menu-item" onclick="report()">Отчет</div>
+                <div class="menu-item" onclick="create_profit()">Добавить прибыль</div>
+                <div class="menu-item" onclick="create_waste()">Добавить трату</div>
+                <div class="menu-item" onclick="all_profits()">Все траты</div>
+                <div class="menu-item" onclick="all_wastes()">Вся прибыль</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h1>Изменить трату</h1>
+        <form>
+            <div class="form-group">
+                <label class="form-label" for="amount">Величина траты</label>
+                <input class="form-input" type="text" id="amount" name="amount" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="type">Тип траты</label>
+                <input class="form-input" type="text" id="type" name="type" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="info">Информация о трате</label>
+                <textarea class="form-textarea" id="info" name="info" required></textarea>
+            </div>
+            <button class="submit-button" type="submit">Изменить</button>
+        </form>
+    </div>
+</body>
+</html>

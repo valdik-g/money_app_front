@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добавить прибыль</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .menu {
+            display: inline-block;
+            position: relative;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .menu-list {
+            display: none;
+            position: absolute;
+            background-color: black;
+            padding: 10px;
+            min-width: 120px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .menu:hover .menu-list,
+        .menu-list:hover {
+            display: block;
+        }
+
+        .menu-item {
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #333;
+        }
+
+        .form-container {
+            width: 400px;
+            margin: 50px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-input.error {
+            border-color: red;
+        }
+        
+        .error-message {
+            top: 0;
+            left: 100%;
+            margin-left: 10px;
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .form-textarea {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .form-textarea.error {
+            border-color: red;
+        }
+
+        .submit-button {
+            display: block;
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<script>
+    function me() {
+        window.location.href = "/users/show.html";
+    }
+    function all_users() {
+        window.location.href = "/users/index.html";
+    }
+    function create_user() {
+        window.location.href = "/users/create.html";
+    }
+    function report() {
+        window.location.href = "/reports/show.html";
+    }
+    function create_profit() {
+        window.location.href = "/profits/create.html";
+    }
+    function create_waste() {
+        window.location.href = "/wastes/create.html";
+    }
+    function all_profits() {
+        window.location.href = "/profits/index.html";
+    }
+    function all_wastes() {
+        window.location.href = "/wastes/index.html";
+    }
+</script>
+<script>
+    function removeQtyClasses() {
+        var quantity = document.getElementById('amount');
+        var quantityError = document.getElementById('amountError');
+        quantity.classList.remove('error');
+        quantityError.textContent = '';
+    }
+
+    function removeTypeClasses() {
+        var type = document.getElementById('type');
+        var typeError = document.getElementById('typeError');
+        type.classList.remove('error');
+        typeError.textContent = '';
+    }
+
+    function removeInfoClasses() {
+        var info = document.getElementById('info');
+        var infoError = document.getElementById('infoError');
+        info.classList.remove('error');
+        infoError.textContent = '';
+    }
+</script>
+<script>
+    function createProfit() {
+        var quantityInput = document.getElementById("amount");
+        var quantityError = document.getElementById("amountError");
+        var typeInput = document.getElementById("type");
+        var typeError = document.getElementById("typeError");
+        var infoInput = document.getElementById("info");
+        var infoError = document.getElementById("infoError");
+
+        var quantity = quantityInput.value;
+        var type = typeInput.value;
+        var info = infoInput.value;
+
+        quantityInput.classList.remove('error');
+        quantityError.textContent = '';
+        typeInput.classList.remove('error');
+        typeError.textContent = '';
+        infoInput.classList.remove('error');
+        infoError.textContent = '';
+        creationClass.textContent = '';
+
+        // Проверка заполненности полей
+        if (quantity === '') {
+            quantityInput.classList.add('error');
+            quantityError.textContent = 'Величина не может быть пустой';
+        }
+
+        if (type === '') {
+            typeInput.classList.add('error');
+            typeError.textContent = 'Тип не может быть пустым';
+        }
+
+        if (info === '') {
+            infoInput.classList.add('error');
+            infoError.textContent = 'Информация не может быть пустой';
+        }
+
+        // Проверка наличия ошибок
+        var hasErrors = document.querySelectorAll('.error').length > 0;
+
+        console.log(hasErrors)
+
+        if (hasErrors) {
+            return;
+        }
+
+        // var myHeaders = new Headers();
+        // myHeaders.append('Accept', 'application/json')
+        // myHeaders.append('Content-Type', 'application/json');
+        // // myHeaders.append('Cookie', "_money_app_session=CzucOMScK0jyCBVF1qBVDIKAIGbkgCYsZqSVBhWDSpeE7QDQnYSblFYwefbW%2FNpwF8pzJIGnWev0JajFDe1qO8bRIJ0EZfUNiW0%2FuaETCImMDSHykvNHNSDm6UEWERaAVy43hGghBHoq1BRw7kS1%2BZ%2BZ1Txfcl0HlQ24%2FiGXZQITYU72TNVmkhn2i3iLHbIOXhJmZ3anbeTF2HH77Dew74TsBEsllrKdmgK1Z1U6--OfiqExUKuBJXCUAc--eEDtheueM0m95t%2FqKpg3Ag%3D%3D; user_id=rQDd%2B80kDlsxs%2FU8Kmm9CvoAPZroiYr1XY15FXuEWXFPebkUIe0LKchSBP1IIds4xW%2FQbFOwdhDXhw5RAUhgdcQA15uLWSA%2Fxu7DRDXY4nVIKtzkGRMn7%2B0%3D--pu%2BG4VUgzbMwXx55--w8v8IlnaySG%2BHivIZdDO9Q%3D%3D")
+
+        // const request = new Request(`http://127.0.0.1:3000/api/v1/profits`, {
+        //     method: "POST",
+        //     headers: myHeaders,
+        //     body: JSON.stringify({
+        //         quantity: quantity
+        //         profit_type: profit_type
+        //         info: info,
+        //     }),
+        //     mode: "cors",
+        // });
+        // let response = await fetch(request);
+        // console.log(response)
+        // let result = await response.json();
+
+        // if (response.status === 200) {
+        //     window.location.href = "/profits/index.html";
+        // } else {
+        //     creationClass.textContent = "Прибыль не добавлена";
+        // }
+    }
+</script>
+<body>
+    <div class="header">
+        <div class="menu">
+            Пользователь
+            <div class="menu-list">
+                <div class="menu-item" onclick="me()">Я</div>
+                <div class="menu-item" onclick="all_users()">Все пользователи</div>
+                <div class="menu-item" onclick="create_user()">Создать пользователя</div>
+            </div>
+        </div>
+        <div class="menu">
+            Отчеты
+            <div class="menu-list">
+                <div class="menu-item" onclick="report()">Отчет</div>
+                <div class="menu-item" onclick="create_profit()">Добавить прибыль</div>
+                <div class="menu-item" onclick="create_waste()">Добавить трату</div>
+                <div class="menu-item" onclick="all_profits()">Все траты</div>
+                <div class="menu-item" onclick="all_wastes()">Вся прибыль</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h1>Добавить прибыль</h1>
+        <div class="form-group">
+            <label class="form-label" for="amount">Величина прибыли</label>
+            <input class="form-input" type="text" id="amount" name="amount" onclick="removeQtyClasses()">
+            <div id="amountError" class="error-message" style="margin-top:10px;"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="type">Тип прибыли</label>
+            <input class="form-input" type="text" id="type" name="type" onclick="removeTypeClasses()">
+            <div id="typeError" class="error-message" style="margin-top:10px;"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="info">Информация о прибыли</label>
+            <textarea class="form-textarea" id="info" name="info" onclick="removeInfoClasses()"></textarea>
+            <div id="infoError" class="error-message" style="margin-top:10px;"></div>
+        </div>
+        <button class="submit-button" onclick="createProfit()">Добавить</button>
+        <div id="creationClass" class="error-message" style="margin-top:15px;"></div>
+    </div>
+</body>
+</html>

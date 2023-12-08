@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Текущий пользователь</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            text-align: center;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .menu {
+            display: inline-block;
+            position: relative;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .menu-list {
+            display: none;
+            position: absolute;
+            background-color: black;
+            padding: 10px;
+            min-width: 120px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .menu:hover .menu-list,
+        .menu-list:hover {
+            display: block;
+        }
+
+        .menu-item {
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #333;
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        .user-info label {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .user-info input {
+            width: 300px;
+            margin-bottom: 10px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #f2f2f2;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<script>
+    function me() {
+        window.location.href = "/users/show.html";
+    }
+    function all_users() {
+        window.location.href = "/users/index.html";
+    }
+    function create_user() {
+        window.location.href = "/users/create.html";
+    }
+    function report() {
+        window.location.href = "/reports/show.html";
+    }
+    function create_profit() {
+        window.location.href = "/profits/create.html";
+    }
+    function create_waste() {
+        window.location.href = "/wastes/create.html";
+    }
+    function all_profits() {
+        window.location.href = "/profits/index.html";
+    }
+    function all_wastes() {
+        window.location.href = "/wastes/index.html";
+    }
+</script>
+<body>
+    <div class="header">
+        <div class="menu">
+            Пользователь
+            <div class="menu-list">
+                <div class="menu-item" onclick="me()">Я</div>
+                <div class="menu-item" onclick="all_users()">Все пользователи</div>
+                <div class="menu-item" onclick="create_user()">Создать пользователя</div>
+            </div>
+        </div>
+        <div class="menu">
+            Отчеты
+            <div class="menu-list">
+                <div class="menu-item" onclick="report()">Отчет</div>
+                <div class="menu-item" onclick="create_profit()">Добавить прибыль</div>
+                <div class="menu-item" onclick="create_waste()">Добавить трату</div>
+                <div class="menu-item" onclick="all_profits()">Все траты</div>
+                <div class="menu-item" onclick="all_wastes()">Вся прибыль</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="user-info">
+        <h1>Текущий пользователь</h1>
+        <label for="name">Имя:</label>
+        <input type="text" id="name" value="Иван" readonly>
+        <label for="surname">Фамилия:</label>
+        <input type="text" id="surname" value="Иванов" readonly>
+        <label for="position">Должность:</label>
+        <input type="text" id="position" value="Менеджер" readonly>
+        <label for="email">Email:</label>
+        <input type="text" id="email" value="ivan@example.com" readonly>
+    </div>
+</body>
+</html>

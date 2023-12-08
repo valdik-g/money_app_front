@@ -1,0 +1,83 @@
+<html>
+<head>
+    <title>Обновление пользователя</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+    <script>
+        function updateUser() {
+            // Получаем значения из полей ввода
+            var isAdmin = document.getElementById("adminInput").value;
+            var userId = document.getElementById("userIdInput").value;
+            var firstName = document.getElementById("firstNameInput").value;
+            var lastName = document.getElementById("lastNameInput").value;
+            var position = document.getElementById("positionInput").value;
+            // Выполняем проверки на валидность данных, если необходимо
+        }
+    </script>
+</head>
+<body>
+    <h1>Обновление пользователя</h1>
+    <form>
+        <label for="adminInput">Админ:</label>
+        <select id="adminInput" name="admin">
+            <option value="no">Нет</option>
+            <option value="yes">Да</option>
+        </select>
+
+        <label for="userIdInput">Идентификатор пользователя:</label>
+        <input type="text" id="userIdInput" name="userId">
+
+        <label for="firstNameInput">Имя:</label>
+        <input type="text" id="firstNameInput" name="firstName">
+
+        <label for="lastNameInput">Фамилия:</label>
+        <input type="text" id="lastNameInput" name="lastName">
+
+        <label for="positionInput">Должность:</label>
+        <input type="text" id="positionInput" name="position">
+
+        <input type="button" value="Обновить" onclick="updateUser()">
+    </form>
+</body>

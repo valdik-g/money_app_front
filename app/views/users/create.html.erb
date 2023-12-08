@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Меню</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .menu {
+            display: inline-block;
+            position: relative;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .menu-list {
+            display: none;
+            position: absolute;
+            background-color: black;
+            padding: 10px;
+            min-width: 120px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .menu:hover .menu-list,
+        .menu-list:hover {
+            display: block;
+        }
+
+        .menu-item {
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #333;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        input[type="button"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="button"]:hover {
+            background-color: #45a049;
+        }
+
+        .notDisplayHeader {
+            display: none;
+        }
+    </style>
+    <script>
+        function me() {
+            window.location.href = "/users/show.html";
+	    }
+        function all_users() {
+            window.location.href = "/users/show.html";
+	    }
+        function create_user() {
+            window.location.href = "/users/create.html";
+	    }
+        function report() {
+            window.location.href = "/reports/show.html";
+	    }
+        function create_profit() {
+            window.location.href = "/profits/create.html";
+	    }
+        function create_waste() {
+            window.location.href = "/wastes/create.html";
+	    }
+        function all_profits() {
+            window.location.href = "/profits/index.html";
+	    }
+        function all_wastes() {
+            window.location.href = "/wastes/index.html";
+	    }
+        function createUser() {
+            // Получаем значения из полей ввода
+            var isAdmin = document.getElementById("adminInput").value;
+            var userId = document.getElementById("userIdInput").value;
+            var firstName = document.getElementById("firstNameInput").value;
+            var lastName = document.getElementById("lastNameInput").value;
+            var position = document.getElementById("positionInput").value;
+            var email = document.getElementById("emailInput").value;
+
+            // Выполняем проверки на валидность данных, если необходимо
+
+            // Отправляем данные на сервер для создания пользователя
+            // В этом примере я использовал простой вывод данных в консоль браузера
+            console.log("Создание пользователя:");
+            console.log("Админ: " + isAdmin);
+            console.log("Идентификатор пользователя: " + userId);
+            console.log("Имя: " + firstName);
+            console.log("Фамилия: " + lastName);
+            console.log("Должность: " + position);
+            console.log("Электронная почта: " + email);
+
+            // Дополнительные действия, например, перенаправление на другую страницу
+            // window.location.href = "новая_страница.html";
+        }
+    </script>
+</head>
+<body>
+    <script>
+        async function prepare() {
+            var no = document.getElementById("no");
+            var header = document.getElementById("header");
+
+            var myHeaders = new Headers();
+            myHeaders.append('Accept', 'application/json')
+            myHeaders.append('Content-Type', 'application/json');
+
+            const request = new Request(`http://127.0.0.1:3000/api/v1/users/current_user`, {
+                method: "GET",
+                headers: myHeaders,
+                mode: "cors"
+            });
+            let response = await fetch(request);
+            console.log(response)
+            let result = await response.json();
+
+            if (response.status !== 200) {
+                no.classList.add('notDisplayOrder');
+                header.classList.add('notDisplayOrder');
+            }
+        }
+        prepare();
+    </script>
+    <div id="header" class="header">
+        <div class="menu">
+            Пользователь
+            <div class="menu-list">
+                <div class="menu-item" onclick="me()">Я</div>
+                <div class="menu-item" onclick="all_users()">Все пользователи</div>
+                <div class="menu-item" onclick="create_user()">Создать пользователя</div>
+            </div>
+        </div>
+        <div class="menu">
+            Отчеты
+            <div class="menu-list">
+                <div class="menu-item" onclick="report()">Отчет</div>
+                <div class="menu-item" onclick="create_profit()">Добавить прибыль</div>
+                <div class="menu-item" onclick="create_waste()">Добавить трату</div>
+                <div class="menu-item" onclick="all_profits()">Все траты</div>
+                <div class="menu-item" onclick="all_wastes()">Вся прибыль</div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Создание пользователя</h1>
+    <form>
+        <label for="adminInput">Админ:</label>
+        <select id="adminInput" name="admin">
+            <option id="no" value="false">Нет</option>
+            <option value="true">Да</option>
+        </select>
+
+        <label for="userIdInput">Идентификатор пользователя:</label>
+        <input type="text" id="userIdInput" name="userId">
+
+        <label for="firstNameInput">Имя:</label>
+        <input type="text" id="firstNameInput" name="firstName">
+
+        <label for="lastNameInput">Фамилия:</label>
+        <input type="text" id="lastNameInput" name="lastName">
+
+        <label for="positionInput">Должность:</label>
+        <input type="text" id="positionInput" name="position">
+
+        <label for="emailInput">Электронная почта:</label>
+        <input type="email" id="emailInput" name="email">
+
+        <input type="button" value="Создать" onclick="createUser()">
+    </form>
+</body>
+</html>

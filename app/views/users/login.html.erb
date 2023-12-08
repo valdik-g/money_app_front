@@ -1,0 +1,169 @@
+<head>
+    <title>Вход</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            text-align: left;
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .form-input.error {
+            border-color: red;
+        }
+
+        .error-message {
+            top: 0;
+            left: 100%;
+            margin-left: 10px;
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 8px;
+            font-size: 14px;
+            background-color: blue;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift()
+        }
+
+        function removeIdClasses() {
+            var userId = document.getElementById('userId');
+            var userIdError = document.getElementById('userIdError');
+            userId.classList.remove('error');
+            userIdError.textContent = '';
+        }
+
+        function removePasswordClasses() {
+            var password = document.getElementById('password');
+            var passwordError = document.getElementById('passwordError');
+            password.classList.remove('error');
+            passwordError.textContent = '';
+        }
+
+        async function login() {
+            var userIdInput = document.getElementById('userId');
+            var passwordInput = document.getElementById('password');
+            var userIdError = document.getElementById('userIdError');
+            var passwordError = document.getElementById('passwordError');
+
+            var userId = userIdInput.value;
+            var password = passwordInput.value;
+
+            // Сброс предыдущих ошибок
+            userIdInput.classList.remove('error');
+            userIdError.textContent = '';
+            passwordInput.classList.remove('error');
+            passwordError.textContent = '';
+            creationClass.textContent = '';
+
+            // Проверка заполненности полей
+            if (userId === '') {
+                userIdInput.classList.add('error');
+                userIdError.textContent = 'Заполните ID';
+            }
+
+            if (password === '') {
+                passwordInput.classList.add('error');
+                passwordError.textContent = 'Заполните пароль';
+            }
+
+            // Проверка наличия ошибок
+            var hasErrors = document.querySelectorAll('.error').length > 0;
+
+            console.log(hasErrors)
+
+            if (hasErrors) {
+                return;
+            }
+
+            var myHeaders = new Headers();
+            myHeaders.append('Accept', 'application/json')
+            myHeaders.append('Content-Type', 'application/json');
+            // myHeaders.append('Cookie', "_money_app_session=CzucOMScK0jyCBVF1qBVDIKAIGbkgCYsZqSVBhWDSpeE7QDQnYSblFYwefbW%2FNpwF8pzJIGnWev0JajFDe1qO8bRIJ0EZfUNiW0%2FuaETCImMDSHykvNHNSDm6UEWERaAVy43hGghBHoq1BRw7kS1%2BZ%2BZ1Txfcl0HlQ24%2FiGXZQITYU72TNVmkhn2i3iLHbIOXhJmZ3anbeTF2HH77Dew74TsBEsllrKdmgK1Z1U6--OfiqExUKuBJXCUAc--eEDtheueM0m95t%2FqKpg3Ag%3D%3D; user_id=rQDd%2B80kDlsxs%2FU8Kmm9CvoAPZroiYr1XY15FXuEWXFPebkUIe0LKchSBP1IIds4xW%2FQbFOwdhDXhw5RAUhgdcQA15uLWSA%2Fxu7DRDXY4nVIKtzkGRMn7%2B0%3D--pu%2BG4VUgzbMwXx55--w8v8IlnaySG%2BHivIZdDO9Q%3D%3D")
+
+            const request = new Request(`http://127.0.0.1:3000/api/v1/sessions`, {
+                method: "POST",
+                headers: myHeaders,
+                body: JSON.stringify({
+                    user_identificator: userId,
+                    password: password
+                }),
+                mode: "cors",
+                xhrFields: {
+                    withCredentials: true
+                }
+            });
+            let response = await fetch(request);
+            console.log(response)
+            let result = await response.json();
+
+            if (response.status === 200) {
+                window.location.href = "/users/show.html";
+            } else {
+                creationClass.textContent = "Неверный логин или пароль";
+            }
+
+            // window.location.href = "/users/show.html";
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="form-group">
+            <label class="form-label" for="userId">Идентификатор пользователя</label>
+            <input class="form-input" type="text" id="userId" name="userId" onclick="removeIdClasses()">
+            <div id="userIdError" class="error-message" style="margin-top:10px;"></div>
+        </div>
+        <div class="form-group">
+            <label class="form-label" for="password">Пароль</label>
+            <input class="form-input" type="password" id="password" name="password" onclick="removePasswordClasses()">
+            <div id="passwordError" class="error-message" style="margin-top:10px;"></div>
+        </div>
+        <button class="submit-button" onclick="login()">Войти</button>
+        <div id="creationClass" class="error-message" style="margin-top:15px;"></div>
+    </div>
+</body>

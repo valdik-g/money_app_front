@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Страница входа</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .input-field {
+            width: 300px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .error-message {
+            top: 0;
+            left: 100%;
+            margin-left: 10px;
+            color: red;
+            font-size: 12px;
+            text-align: left;
+            white-space: nowrap;
+            margin-bottom: 15px;
+        }
+
+        .input-field.error {
+            border-color: red;
+        }
+
+        .button {
+            width: 300px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+
+        .text {
+            font-size: 14px;
+            color: #666;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .create-button {
+            width: 300px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #2196F3;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .create-button:hover {
+            background-color: #0b7dda;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div>
+            <input type="number" id="uuid" class="input-field" placeholder="Введите UUID компании" onclick="removeClasses()" />
+            <div id="uuidError" class="error-message"></div>
+        </div>
+        <div>
+            <button class="button" onclick="login()">Войти</button>
+        </div>
+        <p class="text">или</p>
+        <button class="create-button" onclick="createCompany()">Создать компанию</button>
+    </div>
+
+    <script>
+        function removeClasses() {
+            var uuid = document.getElementById('uuid');
+            var uuidError = document.getElementById('uuidError');
+            uuid.classList.remove('error');
+            uuidError.textContent = '';
+        }
+
+        async function login() {
+            // Выполнить переход на страницу для логина пользователя
+            var uuid = document.getElementById('uuid');
+            var uuid_value = uuid.value;
+            var uuidError = document.getElementById('uuidError');
+            uuid.classList.remove('error');
+            uuidError.textContent = '';
+            if (uuid_value === '') {
+                uuid.classList.add('error');
+                uuidError.textContent = 'UUID не может быть пустым';
+            }
+
+            // Проверка наличия ошибок
+            var hasErrors = document.querySelectorAll('.error').length > 0;
+
+            if (hasErrors) {
+                return;
+            }
+            const request = new Request(`http://localhost:3000/api/v1/companies/${uuid_value}`, {
+                method: "GET",
+                credentials: "same-origin",
+                xhrFields: {
+                    withCredentials: true
+                }
+            });
+            let response = await fetch(request)
+            console.log(document.cookie);
+
+            if (response.status === 200) {
+                window.location.href = "/users/login.html";
+            } else {
+                uuid.classList.add('error');
+                uuidError.textContent = "Компании с данными uuid не существует. Попробуйте его создать!";
+            }
+        }
+
+        function createCompany() {
+            // Выполнить переход на страницу по созданию компании
+            window.location.href = "/companies/create.html";
+        }
+    </script>
+</body>
+</html>

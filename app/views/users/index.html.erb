@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Меню</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .header {
+            background-color: black;
+            padding: 20px;
+            color: white;
+            text-align: center;
+        }
+
+        .menu {
+            display: inline-block;
+            position: relative;
+            margin: 0 10px;
+            cursor: pointer;
+        }
+
+        .menu-list {
+            display: none;
+            position: absolute;
+            background-color: black;
+            padding: 10px;
+            min-width: 120px;
+            z-index: 1;
+            top: 100%;
+            left: 0;
+        }
+
+        .menu:hover .menu-list,
+        .menu-list:hover {
+            display: block;
+        }
+
+        .menu-item {
+            color: white;
+            padding: 5px;
+            cursor: pointer;
+        }
+
+        .menu-item:hover {
+            background-color: #333;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .edit-button,
+        .delete-button {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+        }
+
+        .edit-icon {
+            font-size: 16px;
+            color: blue;
+        }
+
+        .delete-icon {
+            font-size: 16px;
+            color: red;
+        }
+
+        .popup-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .popup {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .popup-message {
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .popup-buttons {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .popup-button {
+            margin-left: 10px;
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #ccc;
+            cursor: pointer;
+        }
+
+        .invisible {
+            display: none;
+        }
+    </style>
+    <script>
+        function goToUpdateUser(userId) {
+            // Перенаправляем на страницу обновления пользователя с указанным идентификатором
+            window.location.href = "users/" + userId;
+        }
+        function goToDeleteUser(userId) {
+            var popup = document.getElementById("popup");
+            popup.classList.remove("invisible");
+        }
+        function cancelDeleteRequest() {
+            var popup = document.getElementById("popup");
+            popup.classList.add("invisible");
+        }
+        // async function sendDeleteRequest(userId) {
+        //     var myHeaders = new Headers();
+        //     myHeaders.append('Accept', 'application/json')
+        //     myHeaders.append('Content-Type', 'application/json');
+
+        //     const request = new Request(`http://127.0.0.1:3000/api/v1/users`, {
+        //         method: "DELETE",
+        //         headers: myHeaders,
+        //         body: JSON.stringify({
+        //             user_identificator: userId
+        //         }),
+        //         mode: "cors",
+        //     });
+        //     let response = await fetch(request);
+
+        //     window.location.href = "/users/index.html";
+        // }
+    </script>
+</head>
+<script>
+    function me() {
+        window.location.href = "/users/show.html";
+    }
+    function all_users() {
+        window.location.href = "/users/index.html";
+    }
+    function create_user() {
+        window.location.href = "/users/create.html";
+    }
+    function report() {
+        window.location.href = "/reports/show.html";
+    }
+    function create_profit() {
+        window.location.href = "/profits/create.html";
+    }
+    function create_waste() {
+        window.location.href = "/wastes/create.html";
+    }
+    function all_profits() {
+        window.location.href = "/profits/index.html";
+    }
+    function all_wastes() {
+        window.location.href = "/wastes/index.html";
+    }
+</script>
+<script>
+    async function getUsers() {
+        const request = new Request(`http://127.0.0.1:3000/api/v1/users/`, {
+            method: "GET"
+        });
+        let response = await fetch(request);
+        let result = await response.json();
+        var table = document.getElementById("usersTable");
+        var html = `<tr>
+                        <th>ID</th>
+                        <th>Имя</th>
+                        <th>Фамилия</th>
+                        <th>Должность</th>
+                        <th>Email</th>
+                        <th>Действия</th>
+                    </tr>`;
+        if (response.status === 200) {
+            for(var i = 0; i < result.length; i++) {
+                html += `<tr>
+                            <td>${result[i]["id"]}</td>
+                            <td>${result[i]["name"]}</td>
+                            <td>${result[i]["surname"]}</td>
+                            <td>${result[i]["post"]}</td>
+                            <td>${result[i]["email"]}</td>
+                            <td>
+                                <button class="delete-button">
+                                    <span class="delete-icon" onclick="goToDeleteUser(${result[i]["id"]})">&#128465;</span>
+                                </button>
+                                <button class="edit-button" onclick="goToUpdateUser(${result[i]["id"]})">
+                                    <span class="edit-icon">&#9998;</span>
+                                </button>
+                            </td>
+                        </tr>`;
+            }
+            table.innerHTML = html;
+        } else {
+            uuid.classList.add('error');
+            uuidError.textContent = "Компании с данными uuid не существует. Попробуйте его создать!";
+        }
+    }
+</script>
+<body>
+    <script>
+        getUsers()
+    </script>
+    <div class="header">
+        <div class="menu">
+            Пользователь
+            <div class="menu-list">
+                <div class="menu-item" onclick="me()">Я</div>
+                <div class="menu-item" onclick="all_users()">Все пользователи</div>
+                <div class="menu-item" onclick="create_user()">Создать пользователя</div>
+            </div>
+        </div>
+        <div class="menu">
+            Отчеты
+            <div class="menu-list">
+                <div class="menu-item" onclick="report()">Отчет</div>
+                <div class="menu-item" onclick="create_profit()">Добавить прибыль</div>
+                <div class="menu-item" onclick="create_waste()">Добавить трату</div>
+                <div class="menu-item" onclick="all_profits()">Все траты</div>
+                <div class="menu-item" onclick="all_wastes()">Вся прибыль</div>
+            </div>
+        </div>
+    </div>
+
+    <h1>Список пользователей</h1>
+    <table id="usersTable">
+        
+        <!-- Добавьте остальных пользователей здесь -->
+    </table>
+    <div id="popup" class="popup-container invisible">
+        <div class="popup">
+            <div class="popup-message">
+                Вы уверены, что хотите удалить пользователя?
+            </div>
+            <div class="popup-buttons">
+                <button class="popup-button" onclick="sendDeleteRequest()">Да</button>
+                <button class="popup-button" onclick="cancelDeleteRequest()">Отмена</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
